@@ -1,0 +1,24 @@
+.custom-button-container {
+  display: flex;
+  min-width: 164px;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  background: #eb610d;
+  color: #fff;
+  text-align: center;
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
+  cursor: pointer;
+}
+
+.custom-button-container-disabled {
+  background: #e9d8d1;
+  color: #4a5568;
+  font-weight: 500;
+  cursor: not-allowed;
+}

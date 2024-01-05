@@ -1,0 +1,89 @@
+.users-main-content {
+  width: 100%;
+  background-color: #fafafa;
+  padding: 24px;
+  height: calc(100vh - 64px);
+
+  .users-action-btn-container {
+    margin-bottom: 24px;
+  }
+
+  .users-action-btn-cont {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .users-action-btn {
+    width: 164px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid #6d2f12;
+    background: #e9d8d1;
+    margin-right: 26px;
+    color: #718096;
+    font-family: Nunito;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+  }
+
+  .table {
+    border-radius: 8px;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-shadow: 0px 0px 7px 0px rgba(3, 59, 105, 0.2);
+  }
+
+  .table thead tr {
+    background-color: #ffdeca;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .table th:first-child {
+    border-radius: 8px 0 0 0px;
+    border-left: 1px solid #ffb588;
+  }
+
+  .table th:last-child {
+    border-radius: 0 8px 0px 0;
+    border-right: 1px solid #ffb588;
+  }
+
+  .table thead th {
+    border-top: 1px solid #ffb588;
+    border-bottom: 1px solid #ffb588;
+    font-family: Nunito;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 16px;
+  }
+
+  .table tbody {
+    background: #fff;
+  }
+
+  .table tbody:last-child tr:last-child td:first-child {
+    border-radius: 0 0 0 8px;
+  }
+
+  .table tbody:last-child tr:last-child td:last-child {
+    border-radius: 0 0 8px 0;
+  }
+
+  .table td,
+  .table th {
+    border-top: 1px solid #ececec;
+  }
+
+  .table td {
+    font-family: Nunito;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 16px;
+    color: #2b303c;
+  }
+}

@@ -1,0 +1,113 @@
+.teams-details-popup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+
+  .teams-details-popup {
+    width: 624px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0px 0px 7px 0px rgba(3, 59, 105, 0.2);
+    padding: 24px 16px;
+  }
+
+  .teams-details-popup-header {
+    color: #2d3748;
+    font-family: Nunito;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    margin-bottom: 8px;
+  }
+
+  .teams-details-popup-subheader {
+    color: #2d3748;
+    font-family: Nunito;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.14px;
+  }
+
+  .teams-details-popup-form-inputs {
+    display: flex;
+    justify-content: space-between;
+    margin: 24px 0;
+
+    div {
+      width: 288px;
+    }
+  }
+
+  .teams-details-popup-footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .team-details-add-member {
+    margin: 24px 0px;
+    display: flex;
+    align-items: end;
+    width: 100%;
+
+    .form-input-with-title-container {
+      width: 73%;
+    }
+
+    .form-input-with-title-input {
+      border-radius: 4px 0 0 4px;
+    }
+  }
+
+  .team-details-add-member-btn {
+    display: flex;
+    width: 164px;
+    height: 40px;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0px 4px 4px 0px;
+    border: 1px solid #eb610d;
+    background: #fffaf7;
+    color: #eb610d;
+    text-align: center;
+    font-family: Nunito;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    cursor: pointer;
+  }
+
+  .team-details-add-member-text {
+    color: #000;
+    font-family: Nunito;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 16px;
+    margin-bottom: 8px;
+  }
+
+  .team-details-add-member-names {
+    display: flex;
+    align-items: center;
+    color: #000;
+    font-family: Nunito;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    margin-bottom: 12px;
+
+    img {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      margin-left: 16px;
+    }
+  }
+}

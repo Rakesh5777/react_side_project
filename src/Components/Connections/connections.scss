@@ -1,0 +1,190 @@
+.connections-container {
+  width: 100%;
+
+  .connections-body-content {
+    background-color: #fafafa;
+    width: 100%;
+    height: calc(100vh - 84px);
+    padding: 1px;
+  }
+
+  .connections-steps-text {
+    color: #151615;
+    font-family: Nunito;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.14px;
+    margin-bottom: 20px;
+  }
+
+  .connections-cloud-provider-poup {
+    padding: 32px 16px;
+    box-shadow: 0px 0px 7px 0px rgba(3, 59, 105, 0.2);
+    width: 624px;
+    height: 252px;
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .connections-cloud-provider-header {
+    color: #2d3748;
+    font-family: Nunito;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    margin-bottom: 32px;
+  }
+
+  .connections-cloud-provider-options {
+    display: flex;
+    align-items: center;
+  }
+
+  .connections-cloud-provider-options-img-cont {
+    width: 132px;
+    height: 132px;
+    border-radius: 8px;
+    background: #fffaf0;
+    box-shadow: 0px 0px 7px 0px rgba(3, 59, 105, 0.2);
+    cursor: pointer;
+  }
+
+  .aws-img-cont {
+    padding: 34px 12.5px;
+    margin-right: 24px;
+  }
+
+  .connections-cloud-provider-options-aws-img {
+    width: 106.875px;
+    height: 64px;
+  }
+
+  .connections-cloud-provider-options-gcp-img {
+    width: 80.971px;
+    height: 64px;
+  }
+
+  .gcp-img-cont {
+    padding: 16px 25.5px;
+  }
+
+  .connections-cloud-provider-options-img-title {
+    color: #004954;
+    text-align: center;
+    font-family: Nunito;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: -0.2px;
+    margin-top: 12px;
+  }
+
+  .connections-aws-cloud-provider-popup {
+    width: 624px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0px 0px 7px 0px rgba(3, 59, 105, 0.2);
+    padding: 24px 0;
+  }
+
+  .connections-aws-cloud-provider-form-input {
+    margin: 0 16px 24px 16px;
+  }
+
+  .connections-aws-cloud-provider-header {
+    color: #2d3748;
+    font-family: Nunito;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    margin-bottom: 8px;
+    margin-left: 16px;
+  }
+
+  .connections-aws-cloud-provider-options {
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .connections-aws-cloud-provider-radio-btn {
+    margin-right: 8px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+
+  .connections-aws-cloud-provider-option-header {
+    color: #2b303c;
+    font-family: Nunito;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    margin-bottom: 4px;
+  }
+
+  .connections-aws-cloud-provider-option-subheader {
+    color: #2d3748;
+    font-family: Nunito;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: -0.14px;
+  }
+
+  .connections-aws-cloud-provider-options-selected {
+    background: rgba(255, 222, 202, 0.5);
+  }
+
+  .connections-aws-cloud-provider-footer {
+    margin: 16px 16px 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .connections-aws-cloud-provider-footer-back-btn {
+    .custom-button-container {
+      background-color: #fff;
+      border: 1px solid #6d2f12;
+      color: #6d2f12;
+    }
+  }
+
+  .connection-link {
+    color: #1b6ebb;
+    font-family: Nunito;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: -0.14px;
+    text-decoration-line: underline;
+    cursor: pointer;
+  }
+}
+
+.connection-drawer-container {
+  width: 480px;
+
+  .connection-drawer-title {
+    display: flex;
+    height: 72px;
+    padding: 12px 32px 12px 32px;
+    align-items: center;
+    border-bottom: 1px solid #c8daeb;
+    background: #fdfdff;
+    box-shadow: 0px 0px 12px 0px rgba(3, 59, 105, 0.2);
+  }
+
+  .connection-drawer-content {
+    padding: 32px;
+  }
+}

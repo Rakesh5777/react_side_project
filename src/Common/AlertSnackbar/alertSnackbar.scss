@@ -1,0 +1,37 @@
+.alert-snackbar-cont {
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  top: 74px;
+  display: flex;
+  justify-content: center;
+
+  .alert-snackbar-container {
+    display: flex;
+    width: 928px;
+    padding: 16px;
+    align-items: center;
+    border-radius: 8px;
+    border: 1px solid #1dc36d;
+    background: #f5fffa;
+  }
+
+  .alert-snackbar-text {
+    font-family: Nunito;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+  }
+
+  .alert-snackbar-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 16px;
+  }
+
+  .alert-snackbar-close-icon {
+    width: 24px;
+    height: 24px;
+  }
+}

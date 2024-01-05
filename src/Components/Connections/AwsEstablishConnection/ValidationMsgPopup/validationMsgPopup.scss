@@ -1,0 +1,27 @@
+.validation-msg-popup-container {
+  width: 576px;
+  padding: 60px 40px;
+  height: 300px;
+
+  .validation-msg-popup-text {
+    color: #2b303c;
+    text-align: center;
+    font-family: Nunito;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 36px;
+    margin-bottom: 20px;
+  }
+
+  .validation-msg-popup-validation-text {
+    color: #105f0e;
+    text-align: center;
+    font-family: Nunito;
+    font-size: 38px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 36px;
+    margin-bottom: 20px;
+  }
+}
