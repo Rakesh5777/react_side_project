@@ -16,6 +16,7 @@ const Connections = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [selectedCloudProvider, setSelectedCloudProvider] = useState("");
   const [connectionName, setConnectionName] = useState("");
+  const [createConnectionClick, setCreateConnectionClick] = useState(false);
 
   const [data,setData] = useState(null)
   useEffect(() => {
@@ -166,6 +167,9 @@ const Connections = () => {
                   connectionName={connectionName}
                   setActiveStep={setActiveStep}
                   handleBackButton={handleBackButton}
+                  setCreateConnectionClick={setCreateConnectionClick}
+                  setData={setData}
+                  data={data}
                 />
               )}
               {activeStep === 2 && selectedCloudProvider === "gcp" && (
@@ -177,7 +181,7 @@ const Connections = () => {
             </div>
           </div>
         )}
-        {activeStep === 4 && <ConnectionsTable setActiveStep={setActiveStep} CONNECTIONS_DATA={data}/>}
+        {activeStep === 4 && <ConnectionsTable setActiveStep={setActiveStep} CONNECTIONS_DATA={data} createConnectionClick={createConnectionClick}/>}
       </div>
     </div>
   );

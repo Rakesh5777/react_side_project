@@ -25,6 +25,63 @@
     border-left: 1px solid #ffb588;
   }
 
+  .SuccessButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  button {
+    position: relative;
+    background-color: #00FFC1;
+    color: #1b5e20;
+    border: 2px solid #1b5e20;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+  }
+  
+  .close-icon {
+    cursor: pointer;
+    margin-left: 8px;
+  }
+
+  .options-list {
+  display: flex;
+  right: 0;
+  white-space: nowrap;
+  flex-direction: column;
+  background-color: #fff; 
+  border: 1px solid #ddd; 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px; 
+  position: absolute;
+  z-index: 1;
+  margin-right: 8px;
+}
+
+.option-item {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.option-item:hover {
+  background-color: #f0f0f0; 
+}
+
+.option-icon {
+  margin-right: 8px;
+}
+
+.option-label {
+  font-size: 14px;
+}
+
   .table th:last-child {
     border-radius: 0 8px 0px 0;
     border-right: 1px solid #ffb588;

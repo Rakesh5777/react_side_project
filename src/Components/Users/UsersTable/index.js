@@ -1,46 +1,73 @@
 import React, { useState } from "react";
 import "./usersTable.scss";
-import moreOptions from "../../../assets/moreOptions.svg";
+import editIcon from "../../../assets/estimations.svg";
 import CustomButton from "../../../Common/CustomButton";
+export const teamIdMap = {
+  1: "Techie Phthons",
+  2: "Go Googlers"
+}
+
+export const roleIdMap = {
+  1: "Admin",
+  2: "Tester"
+}
 
 const UsersTable = (props) => {
-  const { handleUserDetailsPopup } = props;
+  const {
+    handleUserDetailsPopup,
+    handleSetUsersTableData,
+    usersTableData,
+    selectedRows,
+    setSelectedRows,
+    handleIsEditUserMode
+  } = props;
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const [usersTableData, setUsersTableData] = useState([
-    {
-      slNo: 1,
-      name: "David Copperfield",
-      email: "david96copperfield@email.com",
-      role: "Admin",
-      team: "Techie Pythons",
-      createdOn: "02/17/2023",
-      lastLogin: "09/17/2023",
-    },
-    {
-      slNo: 2,
-      name: "David Copperfield",
-      email: "david96copperfield@email.com",
-      role: "User",
-      team: "Techie Pythons",
-      createdOn: "02/17/2023",
-      lastLogin: "09/17/2023",
-    },
-    {
-      slNo: 3,
-      name: "David Copperfield",
-      email: "david96copperfield@email.com",
-      role: "Guest",
-      team: "Techie Pythons",
-      createdOn: "02/17/2023",
-      lastLogin: "09/17/2023",
-    },
-  ]);
+  const handleToggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
+  const handleRemove = () => {
+    const filteredData = usersTableData.filter((item) => !selectedRows.includes(item.slNo));
+    fetch('http://127.0.0.1:8000/remove_users', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ users: usersTableData.filter((item) => selectedRows.includes(item.slNo)) }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to delete users');
+        }
+        return response.json();
+      })
+      .then(() => {
+        handleSetUsersTableData(() => [...filteredData]);
+        setMenuOpen(false);
+      })
+  }
+
+  const handleSelectRow = (slNo) => {
+    if (selectedRows.includes(slNo)) {
+      setSelectedRows(selectedRows.filter((rowId) => rowId !== slNo));
+    } else {
+      setSelectedRows([...selectedRows, slNo]);
+    }
+  };
 
   const displayUsersActionButtons = () => {
     return (
       <div className="users-action-btn-container">
         <div className="users-action-btn-cont">
-          <div className="users-action-btn">Actions</div>
+          <div className="users-action-container">
+            <div onClick={handleToggleMenu} className="users-action-btn">Actions</div>
+            {menuOpen && (
+              <div className="menu">
+                <div className="menu-item" onClick={handleRemove}>Remove</div>
+              </div>
+            )}
+          </div>
           <div className="users-action-add-role-btn">
             <CustomButton
               label="Add User"
@@ -58,11 +85,7 @@ const UsersTable = (props) => {
         <table className="table">
           <thead>
             <tr>
-              <th scope="col">
-                <span>
-                  <input type="checkbox" value="checkedAll" />
-                </span>
-              </th>
+              <th scope="col"></th>
               <th scope="col">No</th>
               <th scope="col">Name</th>
               <th scope="col">Email</th>
@@ -71,23 +94,28 @@ const UsersTable = (props) => {
               <th scope="col">Created On</th>
               <th scope="col">Last Login</th>
               <th scope="col"></th>
+
             </tr>
           </thead>
           <tbody>
             {usersTableData.map((item) => (
               <tr key={item.slNo}>
                 <td>
-                  <input type="checkbox" />
+                  <input
+                    type="checkbox"
+                    checked={selectedRows.includes(item.slNo)}
+                    onChange={() => handleSelectRow(item.slNo)}
+                  />
                 </td>
                 <td>{item.slNo}</td>
-                <td style={{ color: "#1B6EBB" }}>{item.name}</td>
+                <td style={{ color: "#1B6EBB" }}>{`${item.firstName} ${item.lastName}`}</td>
                 <td>{item.email}</td>
-                <td>{item.role}</td>
-                <td>{item.team}</td>
+                <td>{roleIdMap[item.roleId]}</td>
+                <td>{teamIdMap[item.teamId]}</td>
                 <td>{item.createdOn}</td>
                 <td>{item.lastLogin}</td>
                 <td>
-                  <img src={moreOptions} alt="" />
+                  <img src={editIcon} alt="edit mode" onClick={() => { handleIsEditUserMode(item) }} />
                 </td>
               </tr>
             ))}

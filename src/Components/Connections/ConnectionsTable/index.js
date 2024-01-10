@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./connectionsTable.scss";
 // import { CONNECTIONS_DATA } from "./constants";
 import rightArrowBlue from "../../../assets/rightArrowBlue.svg";
@@ -6,10 +6,15 @@ import clipboardCheck from "../../../assets/clipboardCheck.svg";
 import clipboardX from "../../../assets/clipboardX.svg";
 import moreOptions from "../../../assets/moreOptions.svg";
 import CustomButton from "../../../Common/CustomButton";
+import closeIcon from "../../../assets/closeIcon.svg";
+import axios from "axios";
 
 const ConnectionsTable = (props) => {
-  const { setActiveStep, CONNECTIONS_DATA } = props;
+  const { setActiveStep, CONNECTIONS_DATA, createConnectionClick} = props;
   const [connectionsData, setConnectionsData] = useState(CONNECTIONS_DATA);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [showOptionsMap, setShowOptionsMap] = useState({});
+  const [showButton, setShowButton] = useState(true);
 
   const handleExpandConnections = (item) => {
     let ind = connectionsData.findIndex((ele) => ele.id === item.id);
@@ -31,6 +36,133 @@ const ConnectionsTable = (props) => {
       </div>
     );
   };
+
+  const displaySuccessAddConnectionMsg = () => {
+
+    const closeSuccessButton = () => {
+      setShowButton(false);
+    };
+  
+    return (
+<>
+      {createConnectionClick && showButton && (
+        <div className="SuccessButton">
+          <button>
+            Successfully created a connection with AWS Cloud Provider.
+            <span className="close-icon" onClick={closeSuccessButton}>
+              <img src={closeIcon} alt="Close" />
+            </span>
+          </button>
+        </div>
+      )}
+    </>
+    );
+  };
+
+  const handleMoreOptionsClick = (item) => {
+    setSelectedRow(item.id);
+    setShowOptionsMap({
+      ...showOptionsMap,
+      [item.id]: !showOptionsMap[item.id],
+    });
+  };
+
+  const handleOptionClick = (option) => {
+    if (option === "delete") {
+      const connectionToDelete = connectionsData.find(
+        (item) => item.id === selectedRow
+      );
+      if (connectionToDelete) {
+        axios
+          .delete(`http://127.0.0.1:8000/remove_connection?id=${selectedRow}`)
+          .then((response) => {
+            const testResult = response.data
+            if(testResult===false){
+              throw new Error("Delete Failed, Try again")
+            }
+  
+            const updatedConnectionsData = connectionsData.filter(
+              (item) => item.id !== selectedRow
+            );
+            setConnectionsData(updatedConnectionsData);
+  
+            setConnectionsData(updatedConnectionsData);
+            setShowOptionsMap({
+              ...showOptionsMap,
+              [selectedRow]: false,
+            });
+          })
+          .catch((error) => {
+            console.error("Error testing connection:", error);
+          });
+      }
+      if (connectionToDelete) {
+        // deleteConnection();
+        const updatedConnectionsData = connectionsData.filter(
+          (item) => item.id !== selectedRow
+        );
+        setConnectionsData(updatedConnectionsData);
+      }
+    }
+
+    if (option === "test") {
+      const connectionToTest = connectionsData.find(
+        (item) => item.id === selectedRow
+      );
+  
+      if (connectionToTest) {
+        axios
+          .post("http://localhost:8000/test_connection",{connection:connectionToTest})
+          .then((response) => {
+            const testResult = response?.data?.test_result
+  
+            const updatedConnectionsData = connectionsData.map((item) => {
+              if (item.id === selectedRow) {
+                if (item.connection_status !== (testResult ? "success" : "failed")) {
+                  return {
+                    ...item,
+                    connection_status: testResult ? "success" : "failed",
+                  };
+                }
+              }
+              return item;
+            });
+  
+            setConnectionsData(updatedConnectionsData);
+            setShowOptionsMap({
+              ...showOptionsMap,
+              [selectedRow]: false,
+            });
+          })
+          .catch((error) => {
+            console.error("Error testing connection:", error);
+          });
+      }
+    }
+  
+    setShowOptionsMap({
+      ...showOptionsMap,
+      [selectedRow]: false,
+    });
+  };
+
+  const OptionsList = () => {
+    const options = [
+      { label: "Remove Connection", action: () => handleOptionClick("delete") },
+      { label: "Test Connection", action: () => handleOptionClick("test") },
+    ];
+  
+    return (
+      <div className="options-list">
+        {options.map((option, index) => (
+          <div key={index} className="option-item" onClick={option.action}>
+            <span className="option-label">{option.label}</span>
+          </div>
+        ))}
+      </div>
+    );
+  };
+  
 
   const displayConnectionTable = () => {
     return (
@@ -54,7 +186,7 @@ const ConnectionsTable = (props) => {
           </thead>
           <tbody>
             {connectionsData.map((item) => (
-              <>
+              <React.Fragment key={item.id}>
                 <tr key={item.id}>
                  <td>
                     {item?.child_connections.length>0 && <img
@@ -88,7 +220,14 @@ const ConnectionsTable = (props) => {
                     />
                   </td>
                   <td>
-                    <img src={moreOptions} alt="" />
+                    <img
+                      src={moreOptions}
+                      alt=""
+                      onClick={() => handleMoreOptionsClick(item)}
+                    />
+                  {showOptionsMap[item.id] && selectedRow === item.id && (
+                    <OptionsList />
+                  )}
                   </td>
                 </tr>
                 {item.child_connections?.length !== 0 &&
@@ -123,7 +262,7 @@ const ConnectionsTable = (props) => {
                       </td>
                     </tr>
                   ))}
-              </>
+              </React.Fragment>
             ))}
           </tbody>
         </table>
@@ -133,6 +272,7 @@ const ConnectionsTable = (props) => {
 
   return (
     <div className="connections-table-container">
+      {displaySuccessAddConnectionMsg()}
       {displayAddConnectionBtn()}
       {displayConnectionTable()}
     </div>

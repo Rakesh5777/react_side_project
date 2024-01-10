@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./users.scss";
 import MainHeader from "../../Common/MainHeader";
 import usersImg from "../../assets/usersImg.svg";
@@ -12,10 +12,27 @@ const Users = () => {
     firstName: "",
     lastName: "",
     email: "",
-    role: "",
-    team: "",
+    roleId: "",
+    teamId: "",
   });
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [usersTableData, setUsersTableData] = useState([]);
   const [showError, setShowError] = useState(false);
+  const [isEditUserMode, setEditUserMode] = useState(false);
+
+  useEffect(() => {
+    fetch("http://127.0.0.1:8000/users")
+      .then((response) => response.json())
+      .then((data) => {
+        setUsersTableData(data?.user_details);
+        if (data?.user_details?.length === 0) {
+          setActiveStep(0);
+        } else {
+          setActiveStep(2);
+        }
+      });
+  }, [])
+
 
   const handleUserDetailsPopup = () => {
     setUserDetails({
@@ -36,17 +53,58 @@ const Users = () => {
     ) {
       setShowError(true);
     } else {
-      setShowError(false);
-      setActiveStep(2);
+      isEditUserMode ? postEditUserDetails() : postUserDetails();
     }
   };
+
+  const postEditUserDetails = () => {
+    fetch("http://127.0.0.1:8000/update_user", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...userDetails }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setShowError(false);
+        setUsersTableData((prev) => {
+          const editItemData = prev.find(item => data?.user_detail.slNo == item.slNo);
+          editItemData.firstName = data?.user_detail.firstName;
+          editItemData.lastName = data?.user_detail.lastName;
+          editItemData.email = data?.user_detail.email;
+          editItemData.roleId = data?.user_detail.roleId;
+          editItemData.teamId = data?.user_detail.teamId;
+          return [...prev];
+        });
+        setActiveStep(2);
+        setEditUserMode(false);
+      })
+  }
+
+  const postUserDetails = () => {
+    const currentDate = new Date().toLocaleDateString("en-GB");
+    fetch("http://127.0.0.1:8000/add_user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...userDetails, slNo: usersTableData.length + 2, createdOn: currentDate, lastLogin: currentDate }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setShowError(false);
+        setUsersTableData((prev) => [...prev, data?.user_detail]);
+        setActiveStep(2);
+      })
+  }
 
   const handleOnChangeInput = (name, e) => {
     setUserDetails({ ...userDetails, [name]: e.target.value });
   };
 
   const handleChangeDropdownInput = (name, item) => {
-    setUserDetails({ ...userDetails, [name]: item.label });
+    setUserDetails({ ...userDetails, [name]: item.value });
   };
 
   const getSubtitle = () => {
@@ -82,6 +140,12 @@ const Users = () => {
     );
   };
 
+  const handleIsEditUserMode = (rowDetails) => {
+    setUserDetails(rowDetails);
+    setActiveStep(1);
+    setEditUserMode(true);
+  }
+
   return (
     <div className="users-container">
       <MainHeader
@@ -96,7 +160,15 @@ const Users = () => {
         </div>
       )}
       {activeStep === 2 && (
-        <UsersTable handleUserDetailsPopup={handleUserDetailsPopup} />
+        <UsersTable
+          usersTableData={usersTableData}
+          handleSetUsersTableData={setUsersTableData}
+          handleUserDetailsPopup={handleUserDetailsPopup}
+          selectedRows={selectedRows}
+          setSelectedRows={setSelectedRows}
+          handleIsEditUserMode={handleIsEditUserMode}
+          isEditUserMode={isEditUserMode}
+        />
       )}
     </div>
   );

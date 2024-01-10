@@ -25,8 +25,12 @@ const AwsActionOwnwer = (props) => {
   };
 
   const handleNextButton = () => {
+    const connectionNameRegex = /^[a-zA-Z]+$/;
+  
     if (!connectionName?.trim()) {
       setErrorMsg("Connection Name is required");
+    } else if (!connectionNameRegex.test(connectionName.trim())) {
+      setErrorMsg("Connection Name should be a single word with no special characters");
     } else {
       setErrorMsg("");
       setActiveStep(3);

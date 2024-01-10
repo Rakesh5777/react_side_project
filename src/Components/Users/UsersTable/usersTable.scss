@@ -87,3 +87,32 @@
     color: #2b303c;
   }
 }
+
+.users-action-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+}
+.menu {
+  position: absolute;
+  bottom: -4rem;
+  left: 0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 0px 7px 0px rgba(3, 59, 105, 0.2);
+  padding: 8px 0;
+  z-index: 1;
+}
+
+.menu-item {
+  width: 164px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  color: #718096;
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+}

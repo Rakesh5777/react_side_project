@@ -6,15 +6,18 @@ import Drawer from "@mui/material/Drawer";
 import FormInputWithTitle from "../../../Common/FormInputWithTitle";
 import axios from "axios";
 import ValidationMsgPopup from "./ValidationMsgPopup";
+import closeIcon from "../../../assets/closeIcon.svg";
+import "./awsEstablishConnection.scss";
 
 const AwsEstablishConnection = (props) => {
-  const { connectionName, setActiveStep, handleBackButton } = props;
+  const { connectionName, setActiveStep, handleBackButton, data, setData, setCreateConnectionClick } = props;
   const [wayamConnectionSelected, setWayamConnectionSelected] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
   const [openDrawer, setOpenDrawer] = useState(false);
   const [roleArn, setRoleArc] = useState("");
   const [openValidationArnPopup, setOpenValidationArnPopup] = useState(false);
   const [validationMsg, setValidationMsg] = useState("");
+  const [showButton, setShowButton] = useState(false);
 
   const handleToggleConnectionOptions = () => {
     setWayamConnectionSelected(!wayamConnectionSelected);
@@ -29,17 +32,16 @@ const AwsEstablishConnection = (props) => {
   };
 
   const handleCreateConnectionButton = () => {
-    console.log("revise 123")
+    setCreateConnectionClick(true)
     if (!wayamConnectionSelected && !roleArn?.trim()) {
       setErrorMsg("ARN is required");
     } else {
-      console.log("revise error", wayamConnectionSelected, roleArn)
       setErrorMsg("");
 
       const regex = /arn:aws:*/;
       var arn = roleArn?.trim();
-      console.log("roleArn", arn)
-      handleArnValidation();
+
+      // handleArnValidation();
       if (regex.test(arn)) {
         handleArnValidation();
         setOpenValidationArnPopup(true);
@@ -49,9 +51,25 @@ const AwsEstablishConnection = (props) => {
     }
   };
 
+  const connectionTeamplate = [  {
+    id: 1,
+    name: connectionName,
+    project_id: "KLP-NHJ-34512",
+    cloud_provider: "AWS",
+    connection_type: "Customer",
+    created_date: "10/01/2023",
+    created_by: "Jannel Rubben",
+    last_checked: "10/01/2023",
+    last_success: "02/17/2023 - 08:15 CST",
+    account_type: "Payer",
+    connection_status: "success",
+    child_connections: [],
+    expand: false,
+  }]
+
   const handleArnValidation = () => {
     axios
-      .get("/arn_validation")
+      .post("http://127.0.0.1:8000/arn_validation",{arn:roleArn?.trim()})
       .then((res) => {
         if (res?.data?.arn_valid) {
           setTimeout(() => {
@@ -59,6 +77,7 @@ const AwsEstablishConnection = (props) => {
             setTimeout(() => {
               handleClosePopup();
               setActiveStep(4);
+              createConnectionEntry();
             }, 2000);
           }, 4000);
         } else {
@@ -71,9 +90,78 @@ const AwsEstablishConnection = (props) => {
         }
       })
       .catch((error) => {
+        //For failure Uncomment the commented and comment the Uncommented
         // handle error
         console.log(error);
+        setTimeout(() => {
+          setValidationMsg("ARN is Validated Failed");
+          setTimeout(() => {
+            handleClosePopup();
+            setShowButton(true);
+            setActiveStep(3);
+            createConnectionEntry();
+            setData([...data, ...connectionTeamplate]);
+          }, 2000);
+        }, 4000);
+        // setTimeout(() => {
+        //   setValidationMsg("ARN is Validated Successfully");
+        //   setTimeout(() => {
+        //     handleClosePopup();
+        //     setActiveStep(4);
+        //     createConnectionEntry();
+        //     setData([...data, ...connectionTeamplate]);
+        //   }, 2000);
+        // }, 4000);
       });
+  };
+
+  const createConnectionEntry = () => {
+    fetch("http://127.0.0.1:8000/connections", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ test:connectionName })
+    }).then(response => {
+      if (!response.ok) {
+          throw new Error(JSON.stringify(response));
+      }
+      return response.json();
+  })
+  .then(data => {
+      console.log('Success:', data);
+      if(data?.connections_detail.length===0){
+        setActiveStep(0)
+        console.log("No connections")
+      }
+  })
+      .catch((error) => {
+        // handle error
+        console.log(error);
+        // setActiveStep(0);
+      });
+  };
+
+  const displayFailureAddConnectionMsg = () => {
+
+    const closeFailureButton = () => {
+      setShowButton(false);
+    };
+  
+    return (
+<>
+      {showButton && (
+        <div className="FailureButton">
+          <button>
+            Failed in creating a connection with AWS Cloud Provider.
+            <span className="close-icon" onClick={closeFailureButton}>
+              <img src={closeIcon} alt="Close" />
+            </span>
+          </button>
+        </div>
+      )}
+    </>
+    );
   };
 
   const handleClosePopup = () => {
@@ -183,6 +271,7 @@ const AwsEstablishConnection = (props) => {
           </div>
         </div>
       </div>
+      {displayFailureAddConnectionMsg()}
       <Drawer anchor="right" open={openDrawer} onClose={handleToggleDrawer}>
         <div className="connection-drawer-container">
           <div className="connection-drawer-title">Title</div>

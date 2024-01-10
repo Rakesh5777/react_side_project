@@ -1,0 +1,24 @@
+.FailureButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px;
+    margin-right: 30px
+  }
+  
+  button {
+    position: relative;
+    background-color: #e7adad;
+    color: #FF0000;
+    border: 2px solid #FF0000;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+  }
+  
+  .close-icon {
+    cursor: pointer;
+    margin-left: 8px;
+  }

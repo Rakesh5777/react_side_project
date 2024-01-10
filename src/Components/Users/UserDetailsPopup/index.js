@@ -3,6 +3,7 @@ import "./userDetailsPopup.scss";
 import FormInputWithTitle from "../../../Common/FormInputWithTitle";
 import CustomButton from "../../../Common/CustomButton";
 import Dropdown from "../../../Common/Dropdown";
+import { roleIdMap, teamIdMap } from "../UsersTable";
 
 const UserDetailsPopup = (props) => {
   const {
@@ -65,22 +66,22 @@ const UserDetailsPopup = (props) => {
         <div className="users-details-popup-form-inputs">
           <Dropdown
             title="Select Role"
-            selectedValue={userDetails.role}
-            options={[{ label: "1" }, { label: "2" }]}
+            selectedValue={roleIdMap[userDetails.roleId]}
+            options={[{ label: "Admin", value: "1" }, { label: "Tester", value: "2" }]}
             titleInfoHoverMsg="Role"
             titleInfoHoverMsgPosition="top"
             handleSelectDropdown={(item) =>
-              handleChangeDropdownInput("role", item)
+              handleChangeDropdownInput("roleId", item)
             }
           />
           <Dropdown
             title="Select Team"
-            selectedValue={userDetails.team}
-            options={[{ label: "1" }, { label: "2" }]}
+            selectedValue={teamIdMap[userDetails.teamId]}
+            options={[{ label: "Techie Phthons", value: "1" }, { label: "Go Googlers", value: "2" }]}
             titleInfoHoverMsg="Team"
             titleInfoHoverMsgPosition="top"
             handleSelectDropdown={(item) =>
-              handleChangeDropdownInput("team", item)
+              handleChangeDropdownInput("teamId", item)
             }
           />
         </div>
