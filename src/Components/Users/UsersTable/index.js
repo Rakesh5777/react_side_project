@@ -3,7 +3,7 @@ import "./usersTable.scss";
 import editIcon from "../../../assets/estimations.svg";
 import CustomButton from "../../../Common/CustomButton";
 export const teamIdMap = {
-  1: "Techie Phthons",
+  1: "Techie Pythons",
   2: "Go Googlers"
 }
 
@@ -46,6 +46,7 @@ const UsersTable = (props) => {
         if (response.success) {
           handleUpdateTable();
           setMenuOpen(false);
+          setSelectedRows([]);
         } else {
           throw new Error('Failed to delete users');
         }

@@ -12,6 +12,7 @@ const UserDetailsPopup = (props) => {
     handleOnChangeInput,
     handleAddUserDetails,
     handleChangeDropdownInput,
+    isEditUserMode
   } = props;
 
   const displayUsersDetailsPopup = () => {
@@ -88,7 +89,7 @@ const UserDetailsPopup = (props) => {
         </div>
         <div className="users-details-popup-footer">
           <CustomButton
-            label="Add User"
+            label={isEditUserMode ? "Update User" : "Add User"}
             handleCustomButton={handleAddUserDetails}
           />
         </div>

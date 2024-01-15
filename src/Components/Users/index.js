@@ -137,6 +137,7 @@ const Users = () => {
         handleOnChangeInput={handleOnChangeInput}
         handleAddUserDetails={handleAddUserDetails}
         handleChangeDropdownInput={handleChangeDropdownInput}
+        isEditUserMode={isEditUserMode}
       />
     );
   };
