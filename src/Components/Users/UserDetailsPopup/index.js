@@ -55,9 +55,10 @@ const UserDetailsPopup = (props) => {
           title="Email Address"
           placeholder="Add email"
           value={userDetails.email}
+          type="email"
           mandatory={true}
           errorMsg={
-            showError && !userDetails.email?.trim() ? "Email is required" : ""
+            showError && !userDetails.email?.trim() ? "Email is required" : showError && !/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(userDetails.email) ? "Email is invalid" : "" 
           }
           titleInfoHoverMsg="Email"
           titleInfoHoverMsgPosition="top"

@@ -116,3 +116,13 @@
   font-weight: 500;
   line-height: 24px;
 }
+
+.pointer {
+  cursor: pointer;
+}
+
+.disabled-btn {
+  background: #dddddd !important;
+  cursor: not-allowed !important; 
+  color: #718096 !important;
+}

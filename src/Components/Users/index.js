@@ -21,6 +21,10 @@ const Users = () => {
   const [isEditUserMode, setEditUserMode] = useState(false);
 
   useEffect(() => {
+    getTableData();
+  }, [])
+
+  const getTableData = () => {
     fetch("http://127.0.0.1:8000/users")
       .then((response) => response.json())
       .then((data) => {
@@ -31,7 +35,11 @@ const Users = () => {
           setActiveStep(2);
         }
       });
-  }, [])
+  }
+
+  const handleUpdateTable = () => {
+    getTableData();
+  }
 
 
   const handleUserDetailsPopup = () => {
@@ -49,7 +57,8 @@ const Users = () => {
     if (
       !userDetails?.firstName?.trim() ||
       !userDetails?.lastName?.trim() ||
-      !userDetails?.email?.trim()
+      !userDetails?.email?.trim() ||
+      !/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(userDetails.email)
     ) {
       setShowError(true);
     } else {
@@ -66,17 +75,9 @@ const Users = () => {
       body: JSON.stringify({ ...userDetails }),
     })
       .then((response) => response.json())
-      .then((data) => {
+      .then(() => {
         setShowError(false);
-        setUsersTableData((prev) => {
-          const editItemData = prev.find(item => data?.user_detail.slNo == item.slNo);
-          editItemData.firstName = data?.user_detail.firstName;
-          editItemData.lastName = data?.user_detail.lastName;
-          editItemData.email = data?.user_detail.email;
-          editItemData.roleId = data?.user_detail.roleId;
-          editItemData.teamId = data?.user_detail.teamId;
-          return [...prev];
-        });
+        handleUpdateTable();
         setActiveStep(2);
         setEditUserMode(false);
       })
@@ -89,7 +90,7 @@ const Users = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...userDetails, slNo: usersTableData.length + 2, createdOn: currentDate, lastLogin: currentDate }),
+      body: JSON.stringify({ ...userDetails, createdOn: currentDate, lastLogin: currentDate }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -162,12 +163,12 @@ const Users = () => {
       {activeStep === 2 && (
         <UsersTable
           usersTableData={usersTableData}
-          handleSetUsersTableData={setUsersTableData}
           handleUserDetailsPopup={handleUserDetailsPopup}
           selectedRows={selectedRows}
           setSelectedRows={setSelectedRows}
           handleIsEditUserMode={handleIsEditUserMode}
           isEditUserMode={isEditUserMode}
+          handleUpdateTable={handleUpdateTable}
         />
       )}
     </div>

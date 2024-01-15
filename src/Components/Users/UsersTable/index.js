@@ -15,26 +15,26 @@ export const roleIdMap = {
 const UsersTable = (props) => {
   const {
     handleUserDetailsPopup,
-    handleSetUsersTableData,
     usersTableData,
     selectedRows,
     setSelectedRows,
-    handleIsEditUserMode
+    handleIsEditUserMode,
+    handleUpdateTable
   } = props;
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleToggleMenu = () => {
+    if (!selectedRows.length) return; 
     setMenuOpen(!menuOpen);
   };
 
   const handleRemove = () => {
-    const filteredData = usersTableData.filter((item) => !selectedRows.includes(item.slNo));
     fetch('http://127.0.0.1:8000/remove_users', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ users: usersTableData.filter((item) => selectedRows.includes(item.slNo)) }),
+      body: JSON.stringify({ users: usersTableData.filter((item) => selectedRows.includes(item.id)) }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -42,17 +42,22 @@ const UsersTable = (props) => {
         }
         return response.json();
       })
-      .then(() => {
-        handleSetUsersTableData(() => [...filteredData]);
-        setMenuOpen(false);
+      .then((response) => {
+        if (response.success) {
+          handleUpdateTable();
+          setMenuOpen(false);
+        } else {
+          throw new Error('Failed to delete users');
+        }
       })
   }
 
-  const handleSelectRow = (slNo) => {
-    if (selectedRows.includes(slNo)) {
-      setSelectedRows(selectedRows.filter((rowId) => rowId !== slNo));
+  const handleSelectRow = (id) => {
+    setMenuOpen(false);
+    if (selectedRows.includes(id)) {
+      setSelectedRows(selectedRows.filter((rowId) => rowId !== id));
     } else {
-      setSelectedRows([...selectedRows, slNo]);
+      setSelectedRows([...selectedRows, id]);
     }
   };
 
@@ -61,9 +66,9 @@ const UsersTable = (props) => {
       <div className="users-action-btn-container">
         <div className="users-action-btn-cont">
           <div className="users-action-container">
-            <div onClick={handleToggleMenu} className="users-action-btn">Actions</div>
+            <div onClick={handleToggleMenu} className={`users-action-btn pointer ${!selectedRows.length ? 'disabled-btn' : ''}`}>Actions</div>
             {menuOpen && (
-              <div className="menu">
+              <div className="menu pointer">
                 <div className="menu-item" onClick={handleRemove}>Remove</div>
               </div>
             )}
@@ -94,24 +99,23 @@ const UsersTable = (props) => {
               <th scope="col">Created On</th>
               <th scope="col">Last Login</th>
               <th scope="col"></th>
-
             </tr>
           </thead>
           <tbody>
-            {usersTableData.map((item) => (
-              <tr key={item.slNo}>
+            {usersTableData.map((item, index) => (
+              <tr key={item.id}>
                 <td>
                   <input
                     type="checkbox"
-                    checked={selectedRows.includes(item.slNo)}
-                    onChange={() => handleSelectRow(item.slNo)}
+                    checked={selectedRows.includes(item.id)}
+                    onChange={() => handleSelectRow(item.id)}
                   />
                 </td>
-                <td>{item.slNo}</td>
+                <td>{index + 1}</td>
                 <td style={{ color: "#1B6EBB" }}>{`${item.firstName} ${item.lastName}`}</td>
                 <td>{item.email}</td>
-                <td>{roleIdMap[item.roleId]}</td>
-                <td>{teamIdMap[item.teamId]}</td>
+                <td>{!!roleIdMap[item.roleId] ? roleIdMap[item.roleId] : '-'}</td>
+                <td>{!!teamIdMap[item.teamId] ? teamIdMap[item.teamId] : '-'}</td>
                 <td>{item.createdOn}</td>
                 <td>{item.lastLogin}</td>
                 <td>
